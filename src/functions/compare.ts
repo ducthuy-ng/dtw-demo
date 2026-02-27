@@ -1,14 +1,12 @@
-import { readFile } from "node:fs/promises";
 import { createServerFn } from "@tanstack/react-start";
-import pkg from "wavefile";
-
-const { WaveFile } = pkg;
+import { readFile } from "node:fs/promises";
 
 const alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
 
 export const compareVoice = createServerFn()
   .inputValidator((data: { letter: string }) => data)
   .handler(async ({ data }) => {
+    const { WaveFile } = await import("wavefile");
     const file = await readFile("public/alphabet/a.wav");
     const aWavFile = new WaveFile();
     aWavFile.fromBuffer(file);

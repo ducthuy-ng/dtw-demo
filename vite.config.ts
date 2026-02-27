@@ -17,6 +17,12 @@ const config = defineConfig({
     tanstackStart(),
     viteReact(),
   ],
+  optimizeDeps: {
+    include: ['wavefile'],
+  },
+  ssr: {
+    noExternal: ['wavefile'],
+  },
 })
 
 export default config
