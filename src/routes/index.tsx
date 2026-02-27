@@ -24,35 +24,40 @@ function App() {
 
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-start">
-      <div className="w-full text-center text-3xl my-5">Speech recognizer</div>
-      <div className="w-full flex items-center justify-center gap-4 mb-4">
-        <button
-          type="button"
-          className="btn btn-info"
-          disabled={comparingScore.isFetching}
-          onClick={() => {
-            comparingScore.refetch();
-          }}
-        >
-          {comparingScore.isFetching && (
-            <span className="loading loading-spinner loading-xs"></span>
-          )}
-          Test now
-        </button>
+      <button
+        type="button"
+        className="btn btn-info absolute top-4 right-4"
+        disabled={comparingScore.isFetching}
+        onClick={() => {
+          comparingScore.refetch();
+        }}
+      >
+        {comparingScore.isFetching && (
+          <span className="loading loading-spinner loading-xs"></span>
+        )}
+        Test now
+      </button>
+      <div className="w-full grid-rows-2 sticky items-center gap-4 mb-4">
+        <h1 className="w-full text-center text-3xl my-5">Nhận diện ký tự</h1>
       </div>
-      <div className="grid grid-cols-2 w-full h-full grow p-4">
-        <ul className="list rounded-box shadow-md">
-          {alphabet.map((letter) => (
-            <AudioItem
-              key={letter}
-              letter={letter}
-              selected={selectingLetter === letter}
-              url={`scoring/${letter}.wav`}
-              onClick={() => setSelectingLetter(letter)}
-            ></AudioItem>
-          ))}
-        </ul>
-        <div>
+      <div className="flex w-full h-full grow p-4">
+        <div className="flex flex-col w-full items-center *:w-full">
+          <h3 className="text-xl text-center my-6">Ký tự test</h3>
+          <ul className="list rounded-box shadow-md">
+            {alphabet.map((letter) => (
+              <AudioItem
+                key={letter}
+                letter={letter}
+                selected={selectingLetter === letter}
+                url={`scoring/${letter}.wav`}
+                onClick={() => setSelectingLetter(letter)}
+              ></AudioItem>
+            ))}
+          </ul>
+        </div>
+        <div className="divider lg:divider-horizontal"></div>
+        <div className="flex flex-col w-full items-center *:w-full">
+          <h3 className="text-xl text-center my-6">Ký tự mẫu nhận diện</h3>
           {comparingScore.isSuccess && (
             <ul className="list">
               {comparingScore.data?.map((entry) => (
