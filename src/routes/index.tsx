@@ -42,7 +42,7 @@ function App() {
       </div>
       <div className="flex w-full h-full grow p-4">
         <div className="flex flex-col w-full items-center *:w-full">
-          <h3 className="text-xl text-center my-6">Ký tự test</h3>
+          <h3 className="text-xl text-center my-6">Ký tự input</h3>
           <ul className="list rounded-box shadow-md">
             {alphabet.map((letter) => (
               <AudioItem
@@ -57,7 +57,7 @@ function App() {
         </div>
         <div className="divider divider-horizontal"></div>
         <div className="flex flex-col w-full items-center *:w-full">
-          <h3 className="text-xl text-center my-6">Ký tự mẫu nhận diện</h3>
+          <h3 className="text-xl text-center my-6">Ký tự knowledge</h3>
           {comparingScore.isSuccess && (
             <ul className="list">
               {comparingScore.data?.map((entry) => (

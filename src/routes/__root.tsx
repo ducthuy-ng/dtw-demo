@@ -32,7 +32,7 @@ const queryClient = new QueryClient();
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="pastel">
       <head>
         <HeadContent />
       </head>
