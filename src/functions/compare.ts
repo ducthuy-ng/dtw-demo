@@ -7,24 +7,20 @@ export const compareVoice = createServerFn()
   .inputValidator((data: { letter: string }) => data)
   .handler(async ({ data }) => {
     const { WaveFile } = await import("wavefile");
-    const file = await readFile("public/alphabet/a.wav");
-    const aWavFile = new WaveFile();
-    aWavFile.fromBuffer(file);
-    aWavFile.toSampleRate(16000);
 
     const alphabetMapping: Map<string, Float64Array> = new Map();
     for (const letter of alphabet) {
       const file = await readFile(`public/alphabet/${letter}.wav`);
       const wavFile = new WaveFile();
       wavFile.fromBuffer(file);
-      wavFile.toSampleRate(16000);
+      wavFile.toSampleRate(4000);
       alphabetMapping.set(letter, normalizeSoundWave(wavFile.getSamples()));
     }
 
     const mono = await readFile(`public/scoring/${data.letter}.wav`);
     const monoFile = new WaveFile();
     monoFile.fromBuffer(mono);
-    monoFile.toSampleRate(16000);
+    monoFile.toSampleRate(4000);
     const comparingSamples = monoFile.getSamples();
     const monoSamples: Float64Array = Array.isArray(comparingSamples)
       ? comparingSamples[0]
