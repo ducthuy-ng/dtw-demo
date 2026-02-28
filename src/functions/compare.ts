@@ -25,7 +25,11 @@ export const compareVoice = createServerFn()
     const monoFile = new WaveFile();
     monoFile.fromBuffer(mono);
     monoFile.toSampleRate(16000);
-    const incomingA = normalizeSoundWave(monoFile.getSamples());
+    const comparingSamples = monoFile.getSamples();
+    const monoSamples: Float64Array = Array.isArray(comparingSamples)
+      ? comparingSamples[0]
+      : comparingSamples;
+    const incomingA = normalizeSoundWave(monoSamples);
 
     const result: Array<{ letter: string; score: number }> = new Array(
       alphabet.length,
