@@ -26,7 +26,7 @@ function App() {
     <div className="w-screen h-screen flex flex-col items-center justify-start">
       <button
         type="button"
-        className="btn btn-info z-10 absolute top-4 right-4"
+        className="btn btn-info z-10 absolute top-4 right-4 text-2xl"
         disabled={comparingScore.isFetching}
         onClick={() => {
           comparingScore.refetch();
@@ -35,7 +35,7 @@ function App() {
         {comparingScore.isFetching && (
           <span className="loading loading-spinner loading-xs"></span>
         )}
-        Test now
+        Tính điểm
       </button>
       <div className="w-full grid-rows-2 sticky items-center gap-4 mb-4">
         <h1 className="w-full text-center text-6xl font-bold my-5">
@@ -44,7 +44,7 @@ function App() {
       </div>
       <div className="flex w-full h-full grow p-4">
         <div className="flex flex-col w-full items-center *:w-full">
-          <h3 className="text-5xl text-center my-6">Ký tự input</h3>
+          <h3 className="text-5xl text-center my-6">Voice input</h3>
           <ul className="list rounded-box shadow-md">
             {alphabet.map((letter) => (
               <AudioItem
@@ -107,7 +107,7 @@ function AudioItem(props: {
           {props.letter}
         </h2>
         <h3 className="text-center min-w-fit text-2xl text-green-800 font-medium">
-          {props.score?.toFixed(2)}
+          {props.score && "Distance: " + props.score?.toFixed(2)}
         </h3>
       </div>
       <div className="flex items-center gap-4">

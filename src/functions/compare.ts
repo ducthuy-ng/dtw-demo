@@ -44,7 +44,7 @@ export const compareVoice = createServerFn()
  * @param soundWave
  * @returns
  */
-const normalizeSoundWave = (soundWave: Float64Array) => {
+export const normalizeSoundWave = (soundWave: Float64Array) => {
   const min = Math.min(...soundWave);
   const max = Math.max(...soundWave);
 
@@ -57,7 +57,7 @@ const normalizeSoundWave = (soundWave: Float64Array) => {
  * @param ser2
  * @returns
  */
-const calculateDTW2 = (ser1: Float64Array, ser2: Float64Array) => {
+export const calculateDTW2 = (ser1: Float64Array, ser2: Float64Array) => {
   let previousCosts = new Array(ser2.length).fill(Infinity);
   previousCosts[0] = Math.abs(ser1[0] - ser2[0]);
 
