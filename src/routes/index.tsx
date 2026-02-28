@@ -26,7 +26,7 @@ function App() {
     <div className="w-screen h-screen flex flex-col items-center justify-start">
       <button
         type="button"
-        className="btn btn-info absolute top-4 right-4"
+        className="btn btn-info z-10 absolute top-4 right-4"
         disabled={comparingScore.isFetching}
         onClick={() => {
           comparingScore.refetch();
@@ -55,7 +55,7 @@ function App() {
             ))}
           </ul>
         </div>
-        <div className="divider lg:divider-horizontal"></div>
+        <div className="divider divider-horizontal"></div>
         <div className="flex flex-col w-full items-center *:w-full">
           <h3 className="text-xl text-center my-6">Ký tự mẫu nhận diện</h3>
           {comparingScore.isSuccess && (
