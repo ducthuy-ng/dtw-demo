@@ -14,12 +14,16 @@ function App() {
   const comparingScore = useQuery({
     queryKey: ["compare-voice"],
     queryFn: async () => {
-      return (await compareVoice({ data: { letter: selectingLetter } })).sort(
-        (a, b) => a.score - b.score,
-      );
+      const result = await compareVoice({ data: { letter: selectingLetter } });
+      result.dtwDistance.sort((a, b) => a.score - b.score);
+      result.euclideanDistance.sort((a, b) => a.score - b.score);
+      return result;
     },
     enabled: false,
-    initialData: alphabet.map((letter) => ({ letter, score: 0 })),
+    initialData: {
+      dtwDistance: alphabet.map((letter) => ({ letter, score: 0 })),
+      euclideanDistance: alphabet.map((letter) => ({ letter, score: 0 })),
+    },
   });
 
   return (
@@ -42,7 +46,7 @@ function App() {
           Nhận diện ký tự
         </h1>
       </div>
-      <div className="flex w-full h-full grow p-4">
+      <div className="grid grid-cols-3 *:p-2 divide-dashed divide-x-3 items-center w-full h-full grow p-4">
         <div className="flex flex-col w-full items-center *:w-full">
           <h3 className="text-5xl text-center my-6">Voice input</h3>
           <ul className="list rounded-box shadow-md">
@@ -57,12 +61,26 @@ function App() {
             ))}
           </ul>
         </div>
-        <div className="divider divider-horizontal"></div>
         <div className="flex flex-col w-full items-center *:w-full">
-          <h3 className="text-5xl text-center my-6">Ký tự knowledge</h3>
+          <h3 className="text-5xl text-center my-6">DTW</h3>
           {comparingScore.isSuccess && (
             <ul className="list">
-              {comparingScore.data?.map((entry) => (
+              {comparingScore.data?.dtwDistance.map((entry) => (
+                <AudioItem
+                  key={entry.letter}
+                  letter={entry.letter}
+                  url={`alphabet/${entry.letter}.wav`}
+                  score={entry.score}
+                ></AudioItem>
+              ))}
+            </ul>
+          )}
+        </div>
+        <div className="flex flex-col w-full items-center *:w-full">
+          <h3 className="text-5xl text-center my-6">Euclidean</h3>
+          {comparingScore.isSuccess && (
+            <ul className="list">
+              {comparingScore.data?.euclideanDistance.map((entry) => (
                 <AudioItem
                   key={entry.letter}
                   letter={entry.letter}

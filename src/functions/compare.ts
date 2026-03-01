@@ -3,6 +3,12 @@ import { createServerFn } from "@tanstack/react-start";
 
 const alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
 
+type DistanceList = { letter: string; score: number }[];
+type Result = {
+  dtwDistance: DistanceList;
+  euclideanDistance: DistanceList;
+};
+
 export const compareVoice = createServerFn()
   .inputValidator((data: { letter: string }) => data)
   .handler(async ({ data }) => {
@@ -27,17 +33,46 @@ export const compareVoice = createServerFn()
       : comparingSamples;
     const incomingA = normalizeSoundWave(monoSamples);
 
-    const result: Array<{ letter: string; score: number }> = new Array(
-      alphabet.length,
-    );
+    const dtwDistances: DistanceList = new Array(alphabet.length);
     for (const [letter, soundWave] of alphabetMapping) {
-      result.push({
+      dtwDistances.push({
         letter: letter,
         score: calculateDTW2(incomingA, soundWave),
       });
     }
+
+    const euclideanDistances: DistanceList = new Array(alphabet.length);
+    for (const [letter, soundWave] of alphabetMapping) {
+      euclideanDistances.push({
+        letter: letter,
+        score: euclideanDistance(incomingA, soundWave),
+      });
+    }
+    const result: Result = {
+      dtwDistance: dtwDistances,
+      euclideanDistance: euclideanDistances,
+    };
     return result;
   });
+
+export const euclideanDistance = (arr1: Float64Array, arr2: Float64Array) => {
+  const expectedLen = Math.max(arr1.length, arr2.length);
+  const paddedArr1 = padToMatch(arr1, expectedLen);
+  const paddedArr2 = padToMatch(arr2, expectedLen);
+
+  let sum = 0;
+  for (let i = 0; i < expectedLen; i++) {
+    sum += (paddedArr1[i] - paddedArr2[i]) ** 2;
+  }
+  return Math.sqrt(sum);
+};
+
+// 1. Pad shorter array with zeros (common for audio)
+function padToMatch(arr: Float64Array, length: number): Float64Array {
+  const padded = new Float64Array(length);
+  padded.set(arr, 0);
+  return padded;
+}
 
 /**
  * Normalizes a sound wave to the range [0, 1]. https://en.wikipedia.org/wiki/Feature_scaling#Rescaling_(min-max_normalization)
